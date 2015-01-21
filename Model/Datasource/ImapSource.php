@@ -510,25 +510,26 @@ class ImapSource extends DataSource {
 			$this->thread = null;
 			$retries = 0;
 			while (($retries++) < $this->config['retry'] && !$this->thread) {
-				$this->Stream = imap_open($this->_connectionString, $this->config['username'], $this->config['password']);
+				//$this->Stream = imap_open($this->_connectionString, $this->config['username'], $this->config['password']);
+				$this->Stream = imap_open(Configure::read('Emails.connection_string'), Configure::read('Emails.username'), Configure::read('Emails.password'));
 				$this->thread = @imap_thread($this->Stream);
 			}
 
 			if (!$this->thread) {
-				return $this->err(
-					$Model,
-					'Unable to get imap_thread after %s retries. %s',
-					$retries,
-					imap_last_error()
-				);
+				//return $this->err(
+				//	$Model,
+				//	'Unable to get imap_thread after %s retries. %s',
+				//	$retries,
+				//	imap_last_error()
+				//);
 			}
 		} catch (Exception $Exception) {
-			return $this->err(
-				$Model,
-				'Unable to get imap_thread after %s retries. %s',
-				 $retries,
-				$Exception->getMessage() . ' ' . imap_last_error()
-			);
+			//return $this->err(
+			//	$Model,
+			//	'Unable to get imap_thread after %s retries. %s',
+			//	 $retries,
+			//	$Exception->getMessage() . ' ' . imap_last_error()
+			//);
 		}
 
 		return $this->_isConnected = true;
